@@ -27,12 +27,12 @@ button:active{transform:scale(.95)}
 .shell{display:flex;flex-direction:column;height:100svh;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
 
 /* HEADER */
-.hdr{background:var(--navy);border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr{background:var(--navy);border-bottom:2px solid var(--gold);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:40}
 .hdr img{height:36px}
 .hdr-badge{background:rgba(200,178,137,.15);border:1px solid var(--gold);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px}
 
 /* PAGES */
-.pg{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transition:opacity .18s;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + 4px)}
+.pg{position:absolute;top:58px;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transition:opacity .18s;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + 4px)}
 .pg.on{opacity:1;pointer-events:all}
 .pb{max-width:480px;margin:0 auto;padding:12px 12px 20px;display:flex;flex-direction:column;gap:10px}
 
@@ -282,7 +282,7 @@ button:active{transform:scale(.95)}
 const TYPES={
   thai:[
     {id:"3top",   label:"3 ตัวบน",   digits:3,payout:550},
-    {id:"3back",  label:"3 ตัวหลัง", digits:3,payout:550},
+    {id:"3back",  label:"3 ตัวหัว", digits:3,payout:550},
     {id:"3tod",   label:"3 ตัวโต๊ด", digits:3,payout:110},
     {id:"3bot",   label:"3 ตัวล่าง", digits:3,payout:110},
     {id:"2top",   label:"2 ตัวบน",   digits:2,payout:70},
@@ -292,7 +292,7 @@ const TYPES={
   ],
   lao:[
     {id:"3top",   label:"3 ตัวบน",   digits:3,payout:500},
-    {id:"3back",  label:"3 ตัวหลัง", digits:3,payout:500},
+    {id:"3back",  label:"3 ตัวหัว", digits:3,payout:500},
     {id:"3tod",   label:"3 ตัวโต๊ด", digits:3,payout:100},
     {id:"2top",   label:"2 ตัวบน",   digits:2,payout:65},
     {id:"2bot",   label:"2 ตัวล่าง", digits:2,payout:65},
