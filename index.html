@@ -165,6 +165,22 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
 
       <!-- PAGE 1: กดเลข -->
       <div class="page active" id="thai-p1">
+
+        <!-- AGENT SECTION -->
+        <div class="card" style="margin-top:12px;">
+          <div class="card-title">ข้อมูลการแทง</div>
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;font-weight:700;color:#4a6080;letter-spacing:1px;">ชื่อนายหน้า</label>
+              <input id="agentName" type="text" placeholder="เช่น สมชาย" style="background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:8px;padding:9px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1a2a3a;width:100%;">
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:10px;font-weight:700;color:#4a6080;letter-spacing:1px;">ชื่อลูกค้า</label>
+              <input id="customerName" type="text" placeholder="เช่น สมหญิง" style="background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:8px;padding:9px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1a2a3a;width:100%;">
+            </div>
+          </div>
+        </div>
+
         <div class="section">
           <div class="sec-label">เลือกประเภท</div>
           <div class="type-grid">
@@ -264,10 +280,12 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
 
     <!-- ===== SCREEN: นายหน้า ===== -->
     <div class="screen" id="screen-agent">
-      <div class="coming-soon">
-        <div class="coming-icon">👤</div>
-        <div class="coming-txt">นายหน้า</div>
-        <div class="coming-sub">เร็วๆ นี้</div>
+      <div id="agentContent">
+        <div class="coming-soon">
+          <div class="coming-icon">👤</div>
+          <div class="coming-txt">นายหน้า</div>
+          <div class="coming-sub">ยังไม่มีข้อมูล — ส่งโพยก่อน</div>
+        </div>
       </div>
     </div>
 
@@ -335,6 +353,7 @@ document.querySelectorAll('.nav-item').forEach(item=>{
     // hide back btn when switching screens
     document.getElementById('backBtn').classList.add('hidden');
     if(s==='poy') renderPoyHistory();
+    if(s==='agent') renderAgentTab();
     // reset thai page view when leaving
     if(s!=='thai'){
       document.getElementById('thai-p1').classList.add('active');
@@ -551,40 +570,133 @@ document.querySelectorAll('.preset').forEach(p=>{
 // ---- ส่งโพย ----
 document.getElementById('sendBtn').addEventListener('click',()=>{
   if(!entries.length||!price){showToast('กรุณากรอกราคาก่อนส่งโพย');return;}
+  const agentName = document.getElementById('agentName').value.trim()||'ไม่ระบุ';
+  const customerName = document.getElementById('customerName').value.trim()||'ไม่ระบุ';
   const total=entries.reduce((s,e)=>s+e.amount,0);
   const poy={
     id: Date.now(),
     date: new Date().toLocaleDateString('th-TH'),
     time: new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}),
+    agent: agentName,
+    customer: customerName,
     items: [...entries],
     total
   };
   poyHistory.unshift(poy);
 
   // reset
-  entries=[];
-  price='';
-  highlightDups=false;
-  selectedTypes.clear();
-  activeGroup=null;
-  rev2=false; rev3=false; digits='';
+  entries=[];price='';highlightDups=false;
+  selectedTypes.clear();activeGroup=null;rev2=false;rev3=false;digits='';
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.preset').forEach(p=>p.classList.remove('active'));
   document.getElementById('showDupBtn').textContent='แสดงเลขซ้ำ';
-
-  // go back to p1
   document.getElementById('thai-p2').classList.remove('active');
   document.getElementById('thai-p1').classList.add('active');
   document.getElementById('backBtn').classList.add('hidden');
-  renderPage1();
-  renderPage2();
-  renderPriceDisplay();
-
+  renderPage1();renderPage2();renderPriceDisplay();
   showToast(`ส่งโพยแล้ว ${poy.items.length} รายการ ยอด ฿${fmt(total)} ✓`);
   document.getElementById('mainBody').scrollTop=0;
 });
 
-// ---- POY HISTORY ----
+// ---- AGENT TAB ----
+function renderAgentTab(){
+  const c = document.getElementById('agentContent');
+  if(!poyHistory.length){
+    c.innerHTML='<div class="coming-soon"><div class="coming-icon">👤</div><div class="coming-txt">นายหน้า</div><div class="coming-sub">ยังไม่มีข้อมูล — ส่งโพยก่อน</div></div>';
+    return;
+  }
+
+  const COM = 0.33;
+  const agentMap={};
+  poyHistory.forEach(p=>{
+    const k=p.agent;
+    if(!agentMap[k]) agentMap[k]={agent:k, customers:{}, totalBet:0, totalCom:0, poyCount:0};
+    const com = Math.round(p.total * COM);
+    agentMap[k].totalBet += p.total;
+    agentMap[k].totalCom += com;
+    agentMap[k].poyCount++;
+    if(!agentMap[k].customers[p.customer]) agentMap[k].customers[p.customer]={name:p.customer,total:0,com:0,poyCount:0,poys:[]};
+    agentMap[k].customers[p.customer].total += p.total;
+    agentMap[k].customers[p.customer].com   += com;
+    agentMap[k].customers[p.customer].poyCount++;
+    agentMap[k].customers[p.customer].poys.push({...p, com});
+  });
+
+  let html=`<div style="padding:12px 14px 0;font-size:10px;font-weight:700;color:#4a6080;letter-spacing:2px;">สรุปนายหน้า (ค่าคอม 33%)</div>`;
+
+  Object.values(agentMap).forEach(ag=>{
+    html+=`
+    <div style="margin:10px 14px 0;background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:12px;overflow:hidden;">
+
+      <!-- agent header -->
+      <div style="background:#1C3A5F;padding:10px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#fff;font-weight:900;font-size:15px;">👤 ${ag.agent}</span>
+          <span style="color:#C8B289;font-size:11px;">${ag.poyCount} โพย</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;">
+          <div style="display:flex;flex-direction:column;align-items:flex-start;">
+            <span style="font-size:9px;color:#e0d0b0;letter-spacing:1px;">ยอดแทงรวม</span>
+            <span style="font-size:16px;font-weight:900;color:#fff;">฿${fmt(ag.totalBet)}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;">
+            <span style="font-size:9px;color:#e0d0b0;letter-spacing:1px;">ค่าคอมรวม (33%)</span>
+            <span style="font-size:16px;font-weight:900;color:#f5c842;">฿${fmt(ag.totalCom)}</span>
+          </div>
+        </div>
+      </div>`;
+
+    Object.values(ag.customers).forEach(cu=>{
+      html+=`
+      <div style="border-bottom:1px solid #f0ede6;">
+        <!-- customer row -->
+        <div style="padding:9px 14px;display:flex;justify-content:space-between;align-items:center;background:#f8f5f0;">
+          <span style="font-size:13px;font-weight:700;color:#1a2a3a;">🧑 ${cu.name}</span>
+          <div style="text-align:right;">
+            <div style="font-size:11px;color:#4a6080;">ยอด <b style="color:#1C3A5F;">฿${fmt(cu.total)}</b></div>
+            <div style="font-size:11px;color:#a86200;">คอม <b style="color:#a86200;">฿${fmt(cu.com)}</b></div>
+          </div>
+        </div>`;
+
+      cu.poys.forEach(p=>{
+        html+=`
+        <div style="padding:7px 14px 7px 24px;display:flex;justify-content:space-between;border-top:1px dashed #f0ede6;align-items:center;">
+          <div>
+            <div style="font-size:11px;color:#4a6080;">${p.date} ${p.time}</div>
+            <div style="font-size:10px;color:#b0bec8;">${p.items.length} รายการ</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:12px;font-weight:700;color:#1a7a3a;">฿${fmt(p.total)}</div>
+            <div style="font-size:11px;color:#a86200;">คอม ฿${fmt(p.com)}</div>
+          </div>
+        </div>`;
+      });
+      html+=`</div>`;
+    });
+    html+=`</div>`;
+  });
+
+  // grand total
+  const grandBet  = Object.values(agentMap).reduce((s,a)=>s+a.totalBet,0);
+  const grandCom  = Object.values(agentMap).reduce((s,a)=>s+a.totalCom,0);
+  html+=`
+  <div style="margin:10px 14px 0;background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #f5c842;border-radius:12px;padding:14px;">
+    <div style="font-size:10px;font-weight:700;color:#4a6080;letter-spacing:1px;margin-bottom:10px;">ยอดรวมทั้งหมด</div>
+    <div style="display:flex;justify-content:space-between;">
+      <div style="display:flex;flex-direction:column;">
+        <span style="font-size:10px;color:#4a6080;">ยอดแทงทั้งหมด</span>
+        <span style="font-size:20px;font-weight:900;color:#1C3A5F;">฿${fmt(grandBet)}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;">
+        <span style="font-size:10px;color:#a86200;">ค่าคอมทั้งหมด (33%)</span>
+        <span style="font-size:20px;font-weight:900;color:#a86200;">฿${fmt(grandCom)}</span>
+      </div>
+    </div>
+  </div>
+  <div style="height:16px;"></div>`;
+
+  c.innerHTML=html;
+}
 function renderPoyHistory(){
   const c=document.getElementById('poyContent');
   if(!poyHistory.length){
