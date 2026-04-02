@@ -10,21 +10,19 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:'Sarabun',sans-serif;background:#f0ede6;}
-button{font-family:'Sarabun',sans-serif;cursor:pointer;}
+button,input{font-family:'Sarabun',sans-serif;}
 button:active{opacity:.75;}
+input:focus{outline:2px solid #C8B289;border-color:#C8B289!important;}
 
-/* APP SHELL */
 .app{display:flex;flex-direction:column;height:100vh;width:100%;background:#f0ede6;}
-
-/* HEADER */
 .header{background:#1C3A5F;border-bottom:3px solid #C8B289;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:20;}
 .header-title{font-size:18px;font-weight:900;color:#fff;letter-spacing:3px;}
 .header-sub{font-size:9px;color:#e0d0b0;letter-spacing:2px;}
-.back-btn{background:none;border:1.5px solid #C8B289;border-radius:8px;color:#C8B289;font-size:13px;font-weight:700;padding:6px 12px;}
+.back-btn{background:none;border:1.5px solid #C8B289;border-radius:8px;color:#C8B289;font-size:13px;font-weight:700;padding:6px 12px;cursor:pointer;}
 .back-btn.hidden{visibility:hidden;}
-
-/* SCROLL BODY */
 .body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
+.screen{display:none;}.screen.active{display:block;}
+.page{display:none;}.page.active{display:block;}
 
 /* BOTTOM NAV */
 .bottom-nav{display:flex;background:#1C3A5F;border-top:2px solid #C8B289;flex-shrink:0;}
@@ -34,23 +32,15 @@ button:active{opacity:.75;}
 .nav-icon{font-size:26px;line-height:1;}
 .nav-lbl{font-size:12px;color:#fff;font-weight:700;letter-spacing:.5px;}
 
-/* SCREEN */
-.screen{display:none;}
-.screen.active{display:block;}
-
-/* SECTION */
-.section{padding:12px 14px 0;}
-.sec-label{font-size:10px;font-weight:700;color:#4a6080;letter-spacing:2px;margin-bottom:8px;}
+/* CARD */
 .card{background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:12px;padding:14px;margin:10px 14px 0;}
 .card-title{font-size:11px;font-weight:700;color:#4a6080;letter-spacing:1px;border-bottom:1px solid #f0ede6;padding-bottom:8px;margin-bottom:12px;}
-
-/* PAGE SYSTEM inside screen */
-.page{display:none;}
-.page.active{display:block;}
+.section{padding:12px 14px 0;}
+.sec-label{font-size:10px;font-weight:700;color:#4a6080;letter-spacing:2px;margin-bottom:8px;}
 
 /* TYPE GRID */
 .type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.type-btn{background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #d8cdb8;border-radius:10px;padding:10px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .15s;}
+.type-btn{background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #d8cdb8;border-radius:10px;padding:10px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;transition:all .12s;}
 .type-btn.active{background:#1C3A5F;border-color:#1C3A5F;border-top-color:#C8B289;}
 .type-btn.active .tl{color:#fff;}.type-btn.active .tp{color:#C8B289;}
 .type-btn.reverse{background:#fff8ee;border-color:#e0a840;border-top-color:#e0a840;}
@@ -63,12 +53,13 @@ button:active{opacity:.75;}
 
 /* DISPLAY */
 .display-wrap{padding:12px 14px 0;}
-.display-box{background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:14px;padding:16px;display:flex;justify-content:center;width:100%;}
-.digit-slots{display:flex;gap:10px;}
-.slot{width:58px;height:64px;border-radius:10px;background:#f5f2ec;border:1.5px solid #d8cdb8;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;color:#1C3A5F;font-family:monospace;}
+.display-box{background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:14px;padding:16px;display:flex;justify-content:center;}
+.digit-slots{display:flex;gap:10px;width:100%;justify-content:center;}
+.slot{flex:1;max-width:80px;height:72px;border-radius:10px;background:#f5f2ec;border:1.5px solid #d8cdb8;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;color:#1C3A5F;font-family:monospace;}
 .slot.filled{background:#eef3f9;border-color:#1C3A5F;}
 .slot.cursor{border:2px solid #C8B289;}
 
+/* STATUS */
 .status-bar{margin:8px 14px 0;background:#fff;border:1px solid #d8cdb8;border-radius:8px;padding:8px 12px;font-size:12px;color:#4a6080;text-align:center;min-height:34px;}
 .status-bar b{color:#1C3A5F;}
 .status-bar.warn{background:#fff8ee;border-color:#e0a840;color:#a86200;}
@@ -76,16 +67,17 @@ button:active{opacity:.75;}
 /* NUMPAD */
 .numpad-wrap{padding:12px 14px 0;}
 .numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.nkey{background:#fff;border:1.5px solid #d8cdb8;border-radius:14px;height:64px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#1C3A5F;box-shadow:0 2px 0 #d8cdb8;}
+.nkey{background:#fff;border:1.5px solid #d8cdb8;border-radius:14px;height:64px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#1C3A5F;box-shadow:0 2px 0 #d8cdb8;cursor:pointer;}
 .nkey:active{transform:translateY(2px);box-shadow:none;}
 .nkey.clear{background:#e8f0fa;font-size:14px;}
-.nkey.del{background:#fff0f0;color:#8b1a1a;font-size:20px;}
+.nkey.del{background:#fff0f0;color:#8b1a1a;font-size:22px;}
 
+/* ADD BTN */
 .add-wrap{padding:12px 14px 0;}
-.add-btn{width:100%;background:linear-gradient(135deg,#1C3A5F,#264573);border:none;border-radius:12px;padding:16px;color:#fff;font-size:16px;font-weight:700;letter-spacing:1px;}
+.add-btn{width:100%;background:linear-gradient(135deg,#1C3A5F,#264573);border:none;border-radius:12px;padding:16px;color:#fff;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;}
 .add-btn:disabled{opacity:.35;cursor:not-allowed;}
 
-/* PAGE 2 — ใส่ราคา */
+/* PAGE 2 TABLE */
 .p2-label{font-size:13px;font-weight:700;color:#4a6080;padding:12px 14px 0;letter-spacing:1px;}
 .tbl-wrap{padding:8px 14px 0;overflow-x:auto;}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:13px;box-shadow:0 2px 8px rgba(28,58,95,.07);}
@@ -95,46 +87,39 @@ tbody tr{border-bottom:1px solid #f0ede6;}
 tbody tr:last-child{border-bottom:none;}
 td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
 .num-chip{font-weight:900;font-size:13px;color:#fff;background:#C8B289;border-radius:6px;padding:3px 7px;display:inline-block;letter-spacing:2px;}
-.qty-input{width:50px;border:1.5px solid #d8cdb8;border-radius:6px;padding:4px;text-align:center;font-size:14px;font-weight:700;font-family:'Sarabun',sans-serif;background:#f5f2ec;}
-.del-btn{background:#c0392b;border:none;border-radius:6px;color:#fff;font-size:11px;font-weight:700;padding:5px 7px;}
+.qty-input{width:50px;border:1.5px solid #d8cdb8;border-radius:6px;padding:4px;text-align:center;font-size:14px;font-weight:700;background:#f5f2ec;}
+.del-btn{background:#c0392b;border:none;border-radius:6px;color:#fff;font-size:11px;font-weight:700;padding:5px 7px;cursor:pointer;}
 
 .sum-row{padding:8px 14px 0;display:flex;justify-content:space-between;align-items:center;}
 .act-row{padding:8px 14px 0;display:flex;gap:6px;}
-.act-btn{flex:1;border:none;border-radius:10px;padding:10px 4px;font-size:12px;font-weight:700;font-family:'Sarabun',sans-serif;}
+.act-btn{flex:1;border:none;border-radius:10px;padding:10px 4px;font-size:12px;font-weight:700;cursor:pointer;}
 .act-yellow{background:#e0a840;color:#fff;}
 .act-green{background:#1a7a3a;color:#fff;}
 .act-red{background:#c0392b;color:#fff;}
 
+/* PRICE BOX */
 .price-box{margin:10px 14px 0;background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:12px;padding:14px;}
 .price-lbl{font-size:12px;color:#4a6080;margin-bottom:8px;}
 .price-display{font-size:32px;font-weight:900;color:#1C3A5F;text-align:center;background:#f5f2ec;border-radius:8px;padding:10px;letter-spacing:6px;min-height:56px;font-family:monospace;}
 .price-numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;}
-.pkey{background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:10px;height:48px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#1C3A5F;box-shadow:0 2px 0 #d8cdb8;}
+.pkey{background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:10px;height:48px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#1C3A5F;box-shadow:0 2px 0 #d8cdb8;cursor:pointer;}
 .pkey:active{transform:translateY(2px);box-shadow:none;}
 .pkey.clear{background:#e8f0fa;font-size:13px;}
 .pkey.del{background:#fff0f0;color:#8b1a1a;}
 .preset-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.preset{background:#eef3f9;border:1.5px solid #b0c4d8;border-radius:8px;padding:6px 12px;font-size:14px;font-weight:700;color:#1C3A5F;}
+.preset{background:#eef3f9;border:1.5px solid #b0c4d8;border-radius:8px;padding:6px 12px;font-size:14px;font-weight:700;color:#1C3A5F;cursor:pointer;}
 .preset.active{background:#1C3A5F;color:#fff;border-color:#1C3A5F;}
 
 .send-wrap{padding:12px 14px 0;}
-.send-btn-full{width:100%;background:#1a7a3a;border:none;border-radius:12px;padding:16px;color:#fff;font-size:16px;font-weight:700;letter-spacing:1px;}
+.send-btn-full{width:100%;background:#1a7a3a;border:none;border-radius:12px;padding:16px;color:#fff;font-size:16px;font-weight:700;letter-spacing:1px;cursor:pointer;}
 .send-btn-full:disabled{opacity:.35;cursor:not-allowed;}
 
-/* โพยหวย SCREEN */
-.poy-empty{text-align:center;padding:60px 20px;color:#b0bec8;}
-.poy-empty-icon{font-size:48px;margin-bottom:12px;}
+/* POY */
 .poy-card{background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:12px;margin:10px 14px 0;overflow:hidden;}
 .poy-header{background:#1C3A5F;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;}
-.poy-header-title{color:#fff;font-weight:700;font-size:14px;}
-.poy-header-meta{color:#C8B289;font-size:11px;}
 .poy-row{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #f0ede6;font-size:13px;}
 .poy-row:last-child{border-bottom:none;}
-.poy-num{font-weight:900;color:#1C3A5F;font-family:monospace;letter-spacing:2px;}
-.poy-type{color:#4a6080;font-size:12px;}
-.poy-amt{font-weight:700;color:#1a2a3a;}
 .poy-footer{background:#f0ede6;padding:10px 14px;display:flex;justify-content:space-between;font-size:13px;}
-.poy-footer b{color:#1C3A5F;}
 
 /* COMING SOON */
 .coming-soon{text-align:center;padding:80px 20px;color:#b0bec8;}
@@ -143,100 +128,65 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
 .coming-sub{font-size:12px;margin-top:6px;}
 
 /* TOAST */
-.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#1C3A5F;color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;white-space:nowrap;}
+.toast{position:fixed;bottom:75px;left:50%;transform:translateX(-50%);background:#1C3A5F;color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;white-space:nowrap;}
 .toast.show{opacity:1;}
 .empty{text-align:center;padding:32px 0;color:#b0bec8;font-size:13px;}
-
-/* LAO SCREEN — red/gold accent */
-.lao .header-sub{color:#ffd0d0;}
-.lao-card{background:#fff;border:1.5px solid #e0c0b8;border-top:3px solid #c0392b;border-radius:12px;padding:14px;margin:10px 14px 0;}
-.lao-card .card-title{font-size:11px;font-weight:700;color:#7a2020;letter-spacing:1px;border-bottom:1px solid #f5ece9;padding-bottom:8px;margin-bottom:12px;}
-.lao .type-grid .type-btn{border-top-color:#e0a0a0;}
-.lao .type-btn.active{background:#7a1515;border-color:#7a1515;border-top-color:#e0a840;}
-.lao .type-btn.active .tl{color:#fff;}
-.lao .type-btn.active .tp{color:#f5c842;}
-.lao .display-box{border-top-color:#c0392b;}
-.lao .slot.cursor{border-color:#c0392b;}
-.lao .status-bar{background:#fff8f8;border-color:#e0a0a0;color:#7a2020;}
-.lao .status-bar.warn{background:#fff3e0;border-color:#e0a840;}
-.lao .add-btn{background:linear-gradient(135deg,#7a1515,#a01c1c);}
-.lao .send-btn-full{background:#a01c1c;}
-.lao .nkey{color:#7a1515;}
-.lao .nkey.clear{background:#faeaea;}
-.lao .nkey.del{background:#fff0f0;color:#7a1515;}
-
-/* POY SOURCE BADGE */
-.src-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;}
-.src-thai{background:#1C3A5F;color:#C8B289;}
-.src-lao{background:#7a1515;color:#f5c842;}
-
-/* POY DELETE BUTTON */
-.poy-del-btn{background:none;border:none;font-size:16px;cursor:pointer;opacity:.5;padding:4px 6px;}
-.poy-del-btn:hover{opacity:1;}
-
-/* RECEIPT MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;}
-.modal-overlay.hidden{display:none;}
-.modal-box{background:#fff;border-radius:16px;width:100%;max-width:420px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;}
-.modal-head{background:#1C3A5F;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;}
-.modal-head.lao{background:#7a1515;}
-.modal-head-title{color:#fff;font-weight:900;font-size:15px;}
-.modal-head-meta{color:#C8B289;font-size:11px;}
-.modal-close{background:none;border:1.5px solid rgba(255,255,255,.4);border-radius:6px;color:#fff;font-size:13px;font-weight:700;padding:4px 10px;}
-.modal-body{overflow-y:auto;flex:1;}
-.modal-footer{background:#f0ede6;padding:10px 14px;display:flex;justify-content:space-between;font-size:13px;flex-shrink:0;}
-.modal-footer b{color:#1C3A5F;}
-
-/* AGENT TOGGLE */
-.agent-toggle{display:flex;gap:6px;padding:12px 14px 0;}
-.atab{flex:1;padding:8px;border-radius:8px;border:1.5px solid #d8cdb8;font-size:12px;font-weight:700;background:#fff;color:#4a6080;}
-.atab.active{background:#1C3A5F;color:#fff;border-color:#1C3A5F;}
 </style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 </head>
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <div><div class="header-title" id="headerTitle">หวยไทย</div><div class="header-sub">SAP PERMPOON</div></div>
     <button class="back-btn hidden" id="backBtn">◀ กลับ</button>
   </div>
 
-  <!-- BODY -->
   <div class="body" id="mainBody">
 
-    <!-- ===== SCREEN: หวยไทย ===== -->
+    <!-- SCREEN: หวยไทย -->
     <div class="screen active" id="screen-thai">
 
-      <!-- PAGE 1: กดเลข -->
+      <!-- PAGE 1 -->
       <div class="page active" id="thai-p1">
 
-        <!-- AGENT SECTION -->
-        <div class="card" style="margin-top:12px;">
+        <!-- AGENT INFO -->
+        <div class="card">
           <div class="card-title">ข้อมูลการแทง</div>
           <div style="display:flex;gap:10px;">
             <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
               <label style="font-size:10px;font-weight:700;color:#4a6080;letter-spacing:1px;">ชื่อนายหน้า</label>
-              <input id="agentName" type="text" placeholder="เช่น สมชาย" style="background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:8px;padding:9px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1a2a3a;width:100%;">
+              <input id="agentName" type="text" placeholder="เช่น สมชาย" style="background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:8px;padding:9px 12px;font-size:14px;color:#1a2a3a;width:100%;">
             </div>
             <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
               <label style="font-size:10px;font-weight:700;color:#4a6080;letter-spacing:1px;">ชื่อลูกค้า</label>
-              <input id="customerName" type="text" placeholder="เช่น สมหญิง" style="background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:8px;padding:9px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1a2a3a;width:100%;">
+              <input id="customerName" type="text" placeholder="เช่น สมหญิง" style="background:#f5f2ec;border:1.5px solid #d8cdb8;border-radius:8px;padding:9px 12px;font-size:14px;color:#1a2a3a;width:100%;">
             </div>
           </div>
         </div>
 
+        <!-- TYPE SELECT -->
         <div class="section">
           <div class="sec-label">เลือกประเภท</div>
-          <div class="type-grid">
-            <div class="type-btn t3" data-t="3top"   data-payout="550"><span class="tl">3 ตัวบน</span><span class="tp">×550</span></div>
-            <div class="type-btn t3" data-t="3tod"   data-payout="110"><span class="tl">3 ตัวโต๊ด</span><span class="tp">×110</span></div>
-            <div class="type-btn t3" data-t="3bot"   data-payout="110"><span class="tl">3 ตัวล่าง</span><span class="tp">×110</span></div>
+          <!-- row 1: 3 digits -->
+          <div class="type-grid" style="margin-bottom:6px;">
             <div class="type-btn t3" data-t="3front" data-payout="550"><span class="tl">3 ตัวหน้า</span><span class="tp">×550</span></div>
-            <div class="type-btn t2" data-t="2top"   data-payout="70"><span class="tl">2 ตัวบน</span><span class="tp">×70</span></div>
-            <div class="type-btn t2" data-t="2bot"   data-payout="70"><span class="tl">2 ตัวล่าง</span><span class="tp">×70</span></div>
-            <div class="type-btn reverse" id="rev2"><span class="tl">+ กลับ 2 ตัว</span></div>
-            <div class="type-btn reverse" id="rev3"><span class="tl">+ กลับ 3 ตัว</span></div>
+            <div class="type-btn t3" data-t="3back"  data-payout="550"><span class="tl">3 ตัวท้าย</span><span class="tp">×550</span></div>
+            <div class="type-btn t3" data-t="tod_h"  data-payout="110"><span class="tl">โต๊ดหัว</span><span class="tp">×110</span></div>
+            <div class="type-btn t3" data-t="tod_t"  data-payout="110"><span class="tl">โต๊ดท้าย</span><span class="tp">×110</span></div>
+          </div>
+          <!-- row 2: 2 digits + หมุน -->
+          <div class="type-grid" style="margin-bottom:6px;">
+            <div class="type-btn t2" data-t="2top" data-payout="70"><span class="tl">2 ตัวบน</span><span class="tp">×70</span></div>
+            <div class="type-btn t2" data-t="2bot" data-payout="70"><span class="tl">2 ตัวล่าง</span><span class="tp">×70</span></div>
+            <div class="type-btn t3" data-t="spin4" data-payout="110" style="grid-column:3/5;"><span class="tl">หมุน 4 ครั้ง</span><span class="tp">×110</span></div>
+          </div>
+          <!-- row 3: กลับ -->
+          <div class="type-grid">
+            <div class="type-btn reverse" id="rev3" style="grid-column:1/3;"><span class="tl">+ กลับ 3 ตัว</span></div>
+            <div class="type-btn reverse" id="rev2" style="grid-column:3/5;"><span class="tl">+ กลับ 2 ตัว</span></div>
           </div>
         </div>
 
@@ -261,7 +211,7 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
         <div style="height:16px;"></div>
       </div>
 
-      <!-- PAGE 2: ใส่ราคา -->
+      <!-- PAGE 2 -->
       <div class="page" id="thai-p2">
         <div class="p2-label">รายการแทง</div>
         <div class="tbl-wrap">
@@ -270,18 +220,15 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
             <tbody id="entryBody"></tbody>
           </table>
         </div>
-
         <div class="sum-row">
           <span style="font-size:13px;color:#4a6080;" id="sumTxt">0 รายการ</span>
           <span style="font-size:13px;font-weight:700;color:#1C3A5F;" id="sumBet"></span>
         </div>
-
         <div class="act-row">
           <button class="act-btn act-yellow" id="showDupBtn">แสดงเลขซ้ำ</button>
           <button class="act-btn act-green"  id="rmDupBtn">ตัดเลขซ้ำ</button>
           <button class="act-btn act-red"    id="clearAllBtn">ล้างทั้งหมด</button>
         </div>
-
         <div class="price-box">
           <div class="price-lbl">กรอกราคาที่ต้องการแทง ในจำนวนเท่ากัน</div>
           <div class="price-display" id="priceDisplay">_</div>
@@ -291,7 +238,7 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
             <div class="pkey">7</div><div class="pkey">8</div><div class="pkey">9</div>
             <div class="pkey clear">C</div><div class="pkey">0</div><div class="pkey del">⌫</div>
           </div>
-          <div class="preset-row" id="presetRow">
+          <div class="preset-row">
             <div class="preset" data-v="5">5</div>
             <div class="preset" data-v="10">10</div>
             <div class="preset" data-v="20">20</div>
@@ -300,132 +247,29 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
             <div class="preset" data-v="500">500</div>
           </div>
         </div>
-
         <div class="send-wrap">
           <button class="send-btn-full" id="sendBtn" disabled>ส่งโพย</button>
         </div>
         <div style="height:16px;"></div>
       </div>
+    </div>
 
-    </div><!-- /screen-thai -->
+    <!-- SCREEN: หวยลาว -->
+    <div class="screen" id="screen-lao">
+      <div class="coming-soon"><div class="coming-icon">🇱🇦</div><div class="coming-txt">หวยลาว</div><div class="coming-sub">เร็วๆ นี้</div></div>
+    </div>
 
-    <!-- ===== SCREEN: หวยลาว ===== -->
-    <div class="screen lao" id="screen-lao">
-
-      <!-- PAGE 1: กดเลข -->
-      <div class="page active" id="lao-p1">
-
-        <div class="lao-card" style="margin-top:12px;">
-          <div class="card-title">ข้อมูลการแทง (หวยลาว)</div>
-          <div style="display:flex;gap:10px;">
-            <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
-              <label style="font-size:10px;font-weight:700;color:#7a2020;letter-spacing:1px;">ชื่อนายหน้า</label>
-              <input id="laoAgentName" type="text" placeholder="เช่น สมชาย" style="background:#f5f2ec;border:1.5px solid #e0c0b8;border-radius:8px;padding:9px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1a2a3a;width:100%;">
-            </div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
-              <label style="font-size:10px;font-weight:700;color:#7a2020;letter-spacing:1px;">ชื่อลูกค้า</label>
-              <input id="laoCustomerName" type="text" placeholder="เช่น สมหญิง" style="background:#f5f2ec;border:1.5px solid #e0c0b8;border-radius:8px;padding:9px 12px;font-size:14px;font-family:'Sarabun',sans-serif;color:#1a2a3a;width:100%;">
-            </div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="sec-label" style="color:#7a2020;">เลือกประเภท</div>
-          <div class="type-grid">
-            <div class="type-btn t3 lao-type" data-t="l3top"   data-payout="700"><span class="tl">3 ตัวบน</span><span class="tp">×700</span></div>
-            <div class="type-btn t3 lao-type" data-t="l3tod"   data-payout="120"><span class="tl">3 ตัวโต๊ด</span><span class="tp">×120</span></div>
-            <div class="type-btn t2 lao-type" data-t="l2top"   data-payout="90"><span class="tl">2 ตัวบน</span><span class="tp">×90</span></div>
-            <div class="type-btn t2 lao-type" data-t="l2bot"   data-payout="90"><span class="tl">2 ตัวล่าง</span><span class="tp">×90</span></div>
-            <div class="type-btn reverse" id="lao-rev2"><span class="tl">+ กลับ 2 ตัว</span></div>
-            <div class="type-btn reverse" id="lao-rev3"><span class="tl">+ กลับ 3 ตัว</span></div>
-          </div>
-        </div>
-
-        <div class="status-bar" id="laoStatusBar">เลือกประเภทเพื่อเริ่มกดเลข</div>
-
-        <div class="display-wrap">
-          <div class="display-box" style="border-top-color:#c0392b;"><div class="digit-slots" id="laoSlots"></div></div>
-        </div>
-
-        <div class="numpad-wrap">
-          <div class="numpad" id="laoNumpad1">
-            <div class="nkey">1</div><div class="nkey">2</div><div class="nkey">3</div>
-            <div class="nkey">4</div><div class="nkey">5</div><div class="nkey">6</div>
-            <div class="nkey">7</div><div class="nkey">8</div><div class="nkey">9</div>
-            <div class="nkey clear">C</div><div class="nkey">0</div><div class="nkey del">⌫</div>
-          </div>
-        </div>
-
-        <div class="add-wrap">
-          <button class="add-btn" id="laoAddBtn" disabled style="background:linear-gradient(135deg,#7a1515,#a01c1c);">ใส่ราคา</button>
-        </div>
-        <div style="height:16px;"></div>
-      </div>
-
-      <!-- PAGE 2: ใส่ราคา -->
-      <div class="page" id="lao-p2">
-        <div class="p2-label" style="color:#7a2020;">รายการแทง (หวยลาว)</div>
-        <div class="tbl-wrap">
-          <table>
-            <thead style="background:#7a1515;"><tr><th>#</th><th>เลข</th><th>ประเภท</th><th>จ่าย</th><th>ราคา</th><th></th></tr></thead>
-            <tbody id="laoEntryBody"></tbody>
-          </table>
-        </div>
-
-        <div class="sum-row">
-          <span style="font-size:13px;color:#4a6080;" id="laoSumTxt">0 รายการ</span>
-          <span style="font-size:13px;font-weight:700;color:#7a1515;" id="laoSumBet"></span>
-        </div>
-
-        <div class="act-row">
-          <button class="act-btn act-yellow" id="laoShowDupBtn">แสดงเลขซ้ำ</button>
-          <button class="act-btn act-green"  id="laoRmDupBtn">ตัดเลขซ้ำ</button>
-          <button class="act-btn act-red"    id="laoClearAllBtn">ล้างทั้งหมด</button>
-        </div>
-
-        <div class="price-box" style="border-top-color:#c0392b;">
-          <div class="price-lbl">กรอกราคาที่ต้องการแทง ในจำนวนเท่ากัน</div>
-          <div class="price-display" id="laoPriceDisplay">_</div>
-          <div class="price-numpad" id="laoPriceNumpad">
-            <div class="pkey">1</div><div class="pkey">2</div><div class="pkey">3</div>
-            <div class="pkey">4</div><div class="pkey">5</div><div class="pkey">6</div>
-            <div class="pkey">7</div><div class="pkey">8</div><div class="pkey">9</div>
-            <div class="pkey clear">C</div><div class="pkey">0</div><div class="pkey del">⌫</div>
-          </div>
-          <div class="preset-row" id="laoPresetRow">
-            <div class="lao-preset preset" data-v="5">5</div>
-            <div class="lao-preset preset" data-v="10">10</div>
-            <div class="lao-preset preset" data-v="20">20</div>
-            <div class="lao-preset preset" data-v="50">50</div>
-            <div class="lao-preset preset" data-v="100">100</div>
-            <div class="lao-preset preset" data-v="500">500</div>
-          </div>
-        </div>
-
-        <div class="send-wrap">
-          <button class="send-btn-full" id="laoSendBtn" disabled style="background:#a01c1c;">ส่งโพย (หวยลาว)</button>
-        </div>
-        <div style="height:16px;"></div>
-      </div>
-
-    </div><!-- /screen-lao -->
-
-    <!-- ===== SCREEN: โพยหวย ===== -->
+    <!-- SCREEN: โพยหวย -->
     <div class="screen" id="screen-poy">
       <div id="poyContent"></div>
     </div>
 
-    <!-- ===== SCREEN: นายหน้า ===== -->
+    <!-- SCREEN: นายหน้า -->
     <div class="screen" id="screen-agent">
-      <div class="agent-toggle">
-        <button class="atab active" id="atab-summary" onclick="switchAgentTab('summary')">สรุปรวม</button>
-        <button class="atab" id="atab-thai" onclick="switchAgentTab('thai')">🇹🇭 หวยไทย</button>
-        <button class="atab" id="atab-lao"  onclick="switchAgentTab('lao')">🇱🇦 หวยลาว</button>
-      </div>
       <div id="agentContent"></div>
     </div>
 
-  </div><!-- /body -->
+  </div>
 
   <!-- BOTTOM NAV -->
   <div class="bottom-nav">
@@ -434,157 +278,175 @@ td{padding:7px 4px;text-align:center;color:#1a2a3a;vertical-align:middle;}
     <div class="nav-item" data-screen="poy"><div class="nav-icon">📋</div><div class="nav-lbl">โพยหวย</div></div>
     <div class="nav-item" data-screen="agent"><div class="nav-icon">👤</div><div class="nav-lbl">นายหน้า</div></div>
   </div>
-
-</div><!-- /app -->
-
-<!-- RECEIPT MODAL -->
-<div class="modal-overlay hidden" id="receiptModal">
-  <div class="modal-box">
-    <div class="modal-head" id="modalHead">
-      <div>
-        <div class="modal-head-title" id="modalTitle">โพย #—</div>
-        <div style="color:#C8B289;font-size:11px;" id="modalMeta"></div>
-      </div>
-      <button class="modal-close" onclick="closeReceipt()">✕ ปิด</button>
-    </div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-footer">
-      <span id="modalCount"></span>
-      <span>ยอดรวม <b id="modalTotal"></b></span>
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const TYPES = {
-  '3top':  {label:'3 ตัวบน',  digits:3, payout:550, src:'thai'},
-  '3tod':  {label:'3 ตัวโต๊ด',digits:3, payout:110, src:'thai'},
-  '3bot':  {label:'3 ตัวล่าง',digits:3, payout:110, src:'thai'},
-  '3front':{label:'3 ตัวหน้า',digits:3, payout:550, src:'thai'},
-  '2top':  {label:'2 ตัวบน',  digits:2, payout:70,  src:'thai'},
-  '2bot':  {label:'2 ตัวล่าง',digits:2, payout:70,  src:'thai'},
-  // LAO
-  'l3top': {label:'3 ตัวบน (ลาว)',  digits:3, payout:700, src:'lao'},
-  'l3tod': {label:'3 ตัวโต๊ด (ลาว)',digits:3, payout:120, src:'lao'},
-  'l2top': {label:'2 ตัวบน (ลาว)',  digits:2, payout:90,  src:'lao'},
-  'l2bot': {label:'2 ตัวล่าง (ลาว)',digits:2, payout:90,  src:'lao'},
+/* ── FIREBASE ── */
+const firebaseConfig = {
+  apiKey: "AIzaSyAuoBCiqZ0KSzSSuznUQPTjFHtXuxJPK4U",
+  authDomain: "sap-lotto8.firebaseapp.com",
+  databaseURL: "https://sap-lotto8-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "sap-lotto8",
+  storageBucket: "sap-lotto8.firebasestorage.app",
+  messagingSenderId: "391727245241",
+  appId: "1:391727245241:web:6b776371d44c7775e4f868",
+  measurementId: "G-W1N6K1KL76"
 };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const poyRef = db.ref('poyHistory');
 
-let activeGroup=null, selectedTypes=new Set(), rev2=false, rev3=false, digits='';
-let entries=[], price='', highlightDups=false;
-let poyHistory=[]; // saved poys
+// Realtime listener — sync poyHistory from Firebase
+poyRef.on('value', snapshot => {
+  const data = snapshot.val();
+  poyHistory = data ? Object.values(data).sort((a,b)=>b.id-a.id) : [];
+  // re-render if currently on poy or agent tab
+  const activePoy   = document.getElementById('screen-poy').classList.contains('active');
+  const activeAgent = document.getElementById('screen-agent').classList.contains('active');
+  if(activePoy)   renderPoyHistory();
+  if(activeAgent) renderAgentTab();
+});
 
-// LAO STATE
-let laoActiveGroup=null, laoSelectedTypes=new Set(), laoRev2=false, laoRev3=false, laoDigits='';
-let laoEntries=[], laoPrice='', laoHighlightDups=false;
-let agentTabMode='summary'; // 'summary' | 'thai' | 'lao'
+function savePoyToFirebase(poy){
+  poyRef.child(poy.id.toString()).set(poy);
+}
 
-// localStorage persistence
-function saveHistory(){try{localStorage.setItem('poyHistory',JSON.stringify(poyHistory));}catch(e){}}
-function loadHistory(){try{const d=localStorage.getItem('poyHistory');if(d)poyHistory=JSON.parse(d);}catch(e){poyHistory=[];}}
 
-function fmt(n){return Number(n).toLocaleString('th-TH');}
+const TYPES = {
+  '3front':{label:'3 ตัวหน้า',digits:3,payout:550},
+  '3back': {label:'3 ตัวท้าย',digits:3,payout:550},
+  'tod_h': {label:'โต๊ดหัว',  digits:3,payout:110},
+  'tod_t': {label:'โต๊ดท้าย', digits:3,payout:110},
+  '2top':  {label:'2 ตัวบน',  digits:2,payout:70},
+  '2bot':  {label:'2 ตัวล่าง',digits:2,payout:70},
+  'spin4': {label:'หมุน 4 ครั้ง',digits:3,payout:110},
+};
+const COM = 0.33;
+
+let selectedTypes = new Set();
+let lastGroup = null; // '2' or '3'
+let rev2 = false, rev3 = false;
+let digits = '';
+let entries = [];
+let price = '';
+let highlightDups = false;
+let poyHistory = [];
+
+/* ── UTILS ── */
+function fmt(n){ return Number(n).toLocaleString('th-TH'); }
+
 function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
 }
-function perms(s){
-  if(s.length<=1)return[s];
-  const r=new Set();
-  for(let i=0;i<s.length;i++) perms(s.slice(0,i)+s.slice(i+1)).forEach(p=>r.add(s[i]+p));
-  return[...r];
-}
-function getMax(){return activeGroup==='3'?3:activeGroup==='2'?2:3;}
 
+function perms(s){
+  if(s.length<=1) return [s];
+  const r = new Set();
+  for(let i=0;i<s.length;i++) perms(s.slice(0,i)+s.slice(i+1)).forEach(p=>r.add(s[i]+p));
+  return [...r];
+}
+
+function spin4(s){
+  const r = new Set();
+  r.add(s);
+  r.add(s[1]+s[2]+s[0]);
+  r.add(s[2]+s[0]+s[1]);
+  r.add(s[0]+s[2]+s[1]);
+  return [...r];
+}
+
+function getMax(){
+  return lastGroup === '2' ? 2 : 3;
+}
+
+function has3(){ return [...selectedTypes].some(t=>t!=='spin4'&&TYPES[t]&&TYPES[t].digits===3); }
+function has2(){ return [...selectedTypes].some(t=>TYPES[t]&&TYPES[t].digits===2); }
+
+/* ── BUILD ENTRIES ── */
 function buildEntries(priceVal){
-  const nums=(activeGroup==='3'&&rev3)||(activeGroup==='2'&&rev2)?perms(digits):[digits];
-  const res=[];
-  nums.forEach(n=>selectedTypes.forEach(tid=>{
-    res.push({id:Date.now()+Math.random(), number:n, typeId:tid, label:TYPES[tid].label, payout:TYPES[tid].payout, amount:priceVal});
-  }));
+  const res = [];
+  // spin4
+  if(selectedTypes.has('spin4')){
+    spin4(digits).forEach(n=>{
+      res.push({id:Date.now()+Math.random(),number:n,typeId:'spin4',label:TYPES['spin4'].label,payout:110,amount:priceVal});
+    });
+  }
+  // normal types
+  const normal = [...selectedTypes].filter(t=>t!=='spin4');
+  if(normal.length){
+    let nums = [digits];
+    if(lastGroup==='3' && rev3) nums = perms(digits);
+    if(lastGroup==='2' && rev2) nums = perms(digits);
+    nums.forEach(n=>normal.forEach(tid=>{
+      res.push({id:Date.now()+Math.random(),number:n,typeId:tid,label:TYPES[tid].label,payout:TYPES[tid].payout,amount:priceVal});
+    }));
+  }
   return res;
 }
 
-// ---- BOTTOM NAV ----
-document.querySelectorAll('.nav-item').forEach(item=>{
-  item.addEventListener('click',()=>{
-    const s=item.dataset.screen;
-    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
-    item.classList.add('active');
-    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
-    document.getElementById('screen-'+s).classList.add('active');
-    const titles={thai:'หวยไทย',lao:'หวยลาว 🇱🇦',poy:'โพยหวย',agent:'นายหน้า'};
-    document.getElementById('headerTitle').textContent=titles[s];
-    document.getElementById('backBtn').classList.add('hidden');
-    if(s==='poy') renderPoyHistory();
-    if(s==='agent') renderAgentTab();
-    if(s!=='thai'){
-      document.getElementById('thai-p1').classList.add('active');
-      document.getElementById('thai-p2').classList.remove('active');
-    }
-    if(s!=='lao'){
-      document.getElementById('lao-p1').classList.add('active');
-      document.getElementById('lao-p2').classList.remove('active');
-    }
-    document.getElementById('mainBody').scrollTop=0;
-  });
-});
-
-// ---- PAGE 1 RENDER ----
+/* ── PAGE 1 RENDER ── */
 function renderSlots(){
-  const max=getMax(), c=document.getElementById('slots');
-  c.innerHTML='';
+  const max = getMax();
+  const c = document.getElementById('slots');
+  c.innerHTML = '';
   for(let i=0;i<max;i++){
-    const s=document.createElement('div');
-    s.className='slot'+(digits[i]?' filled':'')+(i===digits.length&&i<max?' cursor':'');
-    s.textContent=digits[i]||'';
+    const s = document.createElement('div');
+    s.className = 'slot' + (digits[i]?' filled':'') + (i===digits.length&&i<max?' cursor':'');
+    s.textContent = digits[i]||'';
     c.appendChild(s);
   }
 }
+
 function renderStatus(){
-  const bar=document.getElementById('statusBar');
-  if(!selectedTypes.size){bar.className='status-bar';bar.innerHTML='เลือกประเภทเพื่อเริ่มกดเลข';return;}
-  const labels=[...selectedTypes].map(t=>TYPES[t].label).join(', ');
-  const rev=(activeGroup==='3'&&rev3)||(activeGroup==='2'&&rev2);
-  if(rev&&digits.length===getMax()){
-    const ps=perms(digits);
+  const bar = document.getElementById('statusBar');
+  if(!selectedTypes.size){ bar.className='status-bar'; bar.innerHTML='เลือกประเภทเพื่อเริ่มกดเลข'; return; }
+  const labels = [...selectedTypes].map(t=>TYPES[t].label).join(', ');
+  const doRev = (lastGroup==='3'&&rev3)||(lastGroup==='2'&&rev2);
+  if(doRev && digits.length===getMax()){
+    const ps = lastGroup==='2'?perms(digits):perms(digits);
     bar.className='status-bar warn';
-    bar.innerHTML=`🔄 <b>${digits}</b> → ${ps.join(', ')} · <b>${ps.length*selectedTypes.size} รายการ</b>`;
+    bar.innerHTML=`🔄 <b>${digits}</b> → ${ps.join(', ')} · <b>${buildEntries(1).length} รายการ</b>`;
   } else {
     bar.className='status-bar';
-    bar.innerHTML=`<b>${labels}</b>`;
+    bar.innerHTML=`<b>${labels}</b>${digits.length===getMax()?' · <b>'+buildEntries(1).length+' รายการ</b>':''}`;
   }
 }
-function renderRevBtns(){
-  const r2=document.getElementById('rev2'), r3=document.getElementById('rev3');
-  r2.classList.toggle('disabled',activeGroup!=='2');
-  r3.classList.toggle('disabled',activeGroup!=='3');
-  r2.classList.toggle('active',rev2&&activeGroup==='2');
-  r3.classList.toggle('active',rev3&&activeGroup==='3');
-}
-function renderAddBtn(){
-  const ready=selectedTypes.size>0&&digits.length===getMax();
-  const btn=document.getElementById('addBtn');
-  btn.disabled=!ready;
-  btn.textContent=ready?`ใส่ราคา (${buildEntries(1).length} รายการ)`:'ใส่ราคา';
-}
-function renderPage1(){renderSlots();renderStatus();renderRevBtns();renderAddBtn();}
 
-// ---- PAGE 2 RENDER ----
+function renderRevBtns(){
+  const r2 = document.getElementById('rev2');
+  const r3 = document.getElementById('rev3');
+  r2.classList.toggle('disabled', !has2());
+  r3.classList.toggle('disabled', !has3());
+  r2.classList.toggle('active', rev2 && has2());
+  r3.classList.toggle('active', rev3 && has3());
+}
+
+function renderAddBtn(){
+  const ready = selectedTypes.size>0 && digits.length===getMax();
+  const btn = document.getElementById('addBtn');
+  btn.disabled = !ready;
+  btn.textContent = ready ? `ใส่ราคา (${buildEntries(1).length} รายการ)` : 'ใส่ราคา';
+}
+
+function renderPage1(){ renderSlots(); renderStatus(); renderRevBtns(); renderAddBtn(); }
+
+/* ── PAGE 2 RENDER ── */
 function renderPage2(){
-  const tbody=document.getElementById('entryBody');
-  tbody.innerHTML='';
-  const numMap={};
-  entries.forEach(e=>{const k=e.number+'_'+e.typeId; numMap[k]=(numMap[k]||0)+1;});
+  const tbody = document.getElementById('entryBody');
+  tbody.innerHTML = '';
+  const numMap = {};
+  entries.forEach(e=>{ const k=e.number+'_'+e.typeId; numMap[k]=(numMap[k]||0)+1; });
+
   if(!entries.length){
     tbody.innerHTML='<tr><td colspan="6"><div class="empty">ไม่มีรายการ</div></td></tr>';
   } else {
     entries.forEach((e,i)=>{
-      const k=e.number+'_'+e.typeId, isDup=numMap[k]>1;
-      const tr=document.createElement('tr');
+      const k = e.number+'_'+e.typeId, isDup = numMap[k]>1;
+      const tr = document.createElement('tr');
       if(highlightDups&&isDup) tr.style.background='#fff8ee';
       tr.innerHTML=`
         <td>${i+1}</td>
@@ -596,62 +458,78 @@ function renderPage2(){
       tbody.appendChild(tr);
     });
   }
-  const total=entries.reduce((s,e)=>s+e.amount,0);
-  document.getElementById('sumTxt').textContent=`${entries.length} รายการ`;
-  document.getElementById('sumBet').textContent=entries.length?`ยอด ฿${fmt(total)}`:'';
-  document.getElementById('sendBtn').disabled=!entries.length||!price;
 
+  const total = entries.reduce((s,e)=>s+e.amount,0);
+  document.getElementById('sumTxt').textContent = `${entries.length} รายการ`;
+  document.getElementById('sumBet').textContent = entries.length ? `ยอด ฿${fmt(total)}` : '';
+  document.getElementById('sendBtn').disabled = !entries.length || !price;
+
+  // qty change
   tbody.querySelectorAll('.qty-input').forEach(inp=>{
     inp.addEventListener('change',()=>{
-      const e=entries.find(x=>x.id==inp.dataset.id);
-      if(e){e.amount=Math.max(1,parseInt(inp.value)||1);inp.value=e.amount;renderPage2();}
+      const e = entries.find(x=>x.id==inp.dataset.id);
+      if(e){ e.amount=Math.max(1,parseInt(inp.value)||1); inp.value=e.amount; renderPage2(); }
     });
   });
+  // delete row
   tbody.querySelectorAll('.del-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      entries=entries.filter(x=>x.id!=btn.dataset.id);
-      highlightDups=false;
+      entries = entries.filter(x=>x.id!=btn.dataset.id);
+      highlightDups = false;
       renderPage2();
       showToast('ลบรายการแล้ว');
     });
   });
 }
+
 function renderPriceDisplay(){
-  document.getElementById('priceDisplay').textContent=price||'_';
-  document.getElementById('sendBtn').disabled=!entries.length||!price;
+  document.getElementById('priceDisplay').textContent = price||'_';
+  document.getElementById('sendBtn').disabled = !entries.length || !price;
   if(price){
-    const val=parseInt(price)||0;
+    const val = parseInt(price)||0;
     entries.forEach(e=>e.amount=val);
-    const total=entries.reduce((s,e)=>s+e.amount,0);
-    document.getElementById('sumBet').textContent=`ยอด ฿${fmt(total)}`;
     document.querySelectorAll('.qty-input').forEach(inp=>inp.value=val);
+    const total = entries.reduce((s,e)=>s+e.amount,0);
+    document.getElementById('sumBet').textContent = `ยอด ฿${fmt(total)}`;
   }
 }
 
-// ---- TYPE BUTTONS ----
+/* ── TYPE BUTTONS ── */
 document.querySelectorAll('.type-btn.t3,.type-btn.t2').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    const g=btn.classList.contains('t3')?'3':'2', t=btn.dataset.t;
-    if(activeGroup&&activeGroup!==g){
-      selectedTypes.clear();
-      document.querySelectorAll('.type-btn.t3,.type-btn.t2').forEach(b=>b.classList.remove('active'));
-      rev2=false;rev3=false;digits='';
+    const g = btn.classList.contains('t3')?'3':'2';
+    const t = btn.dataset.t;
+    if(selectedTypes.has(t)){
+      selectedTypes.delete(t);
+      btn.classList.remove('active');
+      if(!selectedTypes.size){ lastGroup=null; }
+      else { lastGroup = [...selectedTypes].some(x=>TYPES[x].digits===3)?'3':'2'; }
+    } else {
+      selectedTypes.add(t);
+      btn.classList.add('active');
+      lastGroup = g;
     }
-    activeGroup=g;
-    if(selectedTypes.has(t)){selectedTypes.delete(t);btn.classList.remove('active');if(!selectedTypes.size)activeGroup=null;}
-    else{selectedTypes.add(t);btn.classList.add('active');}
-    digits='';
+    digits = '';
     renderPage1();
   });
 });
-document.getElementById('rev2').addEventListener('click',()=>{if(activeGroup!=='2')return;rev2=!rev2;renderPage1();});
-document.getElementById('rev3').addEventListener('click',()=>{if(activeGroup!=='3')return;rev3=!rev3;renderPage1();});
 
-// ---- NUMPAD P1 ----
+document.getElementById('rev2').addEventListener('click',()=>{
+  if(!has2()) return;
+  rev2 = !rev2;
+  renderPage1();
+});
+document.getElementById('rev3').addEventListener('click',()=>{
+  if(!has3()) return;
+  rev3 = !rev3;
+  renderPage1();
+});
+
+/* ── NUMPAD P1 ── */
 document.querySelectorAll('#numpad1 .nkey').forEach(k=>{
   k.addEventListener('click',()=>{
-    if(!activeGroup)return;
-    const v=k.textContent.trim(), max=getMax();
+    if(!selectedTypes.size) return;
+    const v = k.textContent.trim(), max = getMax();
     if(v==='C') digits='';
     else if(v==='⌫') digits=digits.slice(0,-1);
     else if(digits.length<max) digits+=v;
@@ -659,45 +537,55 @@ document.querySelectorAll('#numpad1 .nkey').forEach(k=>{
   });
 });
 
-// ---- GO PAGE 2 ----
+/* ── GO TO PAGE 2 ── */
 document.getElementById('addBtn').addEventListener('click',()=>{
-  const pending=buildEntries(10);
-  if(!pending.length)return;
-  entries=[...entries,...pending];
-  price='';
-  highlightDups=false;
+  const pending = buildEntries(10);
+  if(!pending.length) return;
+  entries = [...entries, ...pending];
+  price = '';
+  highlightDups = false;
   document.querySelectorAll('.preset').forEach(p=>p.classList.remove('active'));
   document.getElementById('thai-p1').classList.remove('active');
   document.getElementById('thai-p2').classList.add('active');
   document.getElementById('backBtn').classList.remove('hidden');
   renderPage2();
   renderPriceDisplay();
-  document.getElementById('mainBody').scrollTop=0;
+  document.getElementById('mainBody').scrollTop = 0;
 });
 
-// ---- ACTION BUTTONS ----
+/* ── BACK ── */
+document.getElementById('backBtn').addEventListener('click',()=>{
+  document.getElementById('thai-p2').classList.remove('active');
+  document.getElementById('thai-p1').classList.add('active');
+  document.getElementById('backBtn').classList.add('hidden');
+  digits = '';
+  renderPage1();
+  document.getElementById('mainBody').scrollTop = 0;
+});
+
+/* ── SHOW DUPS ── */
 document.getElementById('showDupBtn').addEventListener('click',()=>{
-  highlightDups=!highlightDups;
-  document.getElementById('showDupBtn').textContent=highlightDups?'ซ่อนเลขซ้ำ':'แสดงเลขซ้ำ';
+  highlightDups = !highlightDups;
+  document.getElementById('showDupBtn').textContent = highlightDups?'ซ่อนเลขซ้ำ':'แสดงเลขซ้ำ';
   renderPage2();
 });
+
+/* ── REMOVE DUPS ── */
 document.getElementById('rmDupBtn').addEventListener('click',()=>{
-  const seen=new Set(), before=entries.length;
-  entries=entries.filter(e=>{const k=e.number+'_'+e.typeId;if(seen.has(k))return false;seen.add(k);return true;});
-  highlightDups=false;
-  document.getElementById('showDupBtn').textContent='แสดงเลขซ้ำ';
+  const seen = new Set(), before = entries.length;
+  entries = entries.filter(e=>{ const k=e.number+'_'+e.typeId; if(seen.has(k)) return false; seen.add(k); return true; });
+  highlightDups = false;
+  document.getElementById('showDupBtn').textContent = 'แสดงเลขซ้ำ';
   renderPage2();
   showToast(`ตัดออก ${before-entries.length} รายการ`);
 });
 
-// ---- ล้างทั้งหมด ----
+/* ── CLEAR ALL ── */
 document.getElementById('clearAllBtn').addEventListener('click',()=>{
-  if(!entries.length){showToast('ไม่มีรายการ');return;}
+  if(!entries.length){ showToast('ไม่มีรายการ'); return; }
   if(confirm('ล้างรายการทั้งหมด?')){
-    entries=[];
-    price='';
-    highlightDups=false;
-    document.getElementById('showDupBtn').textContent='แสดงเลขซ้ำ';
+    entries = []; price = ''; highlightDups = false;
+    document.getElementById('showDupBtn').textContent = 'แสดงเลขซ้ำ';
     document.querySelectorAll('.preset').forEach(p=>p.classList.remove('active'));
     renderPage2();
     renderPriceDisplay();
@@ -705,10 +593,10 @@ document.getElementById('clearAllBtn').addEventListener('click',()=>{
   }
 });
 
-// ---- PRICE NUMPAD ----
+/* ── PRICE NUMPAD ── */
 document.querySelectorAll('#priceNumpad .pkey').forEach(k=>{
   k.addEventListener('click',()=>{
-    const v=k.textContent.trim();
+    const v = k.textContent.trim();
     if(v==='C') price='';
     else if(v==='⌫') price=price.slice(0,-1);
     else price+=v;
@@ -719,7 +607,7 @@ document.querySelectorAll('#priceNumpad .pkey').forEach(k=>{
 });
 document.querySelectorAll('.preset').forEach(p=>{
   p.addEventListener('click',()=>{
-    price=p.dataset.v;
+    price = p.dataset.v;
     document.querySelectorAll('.preset').forEach(x=>x.classList.remove('active'));
     p.classList.add('active');
     renderPriceDisplay();
@@ -727,75 +615,109 @@ document.querySelectorAll('.preset').forEach(p=>{
   });
 });
 
-// ---- ส่งโพย ----
+/* ── SEND POY ── */
 document.getElementById('sendBtn').addEventListener('click',()=>{
-  if(!entries.length||!price){showToast('กรุณากรอกราคาก่อนส่งโพย');return;}
-  const agentName = document.getElementById('agentName').value.trim()||'ไม่ระบุ';
-  const customerName = document.getElementById('customerName').value.trim()||'ไม่ระบุ';
-  const total=entries.reduce((s,e)=>s+e.amount,0);
-  const poy={
+  if(!entries.length||!price){ showToast('กรุณากรอกราคาก่อนส่งโพย'); return; }
+  const agent    = document.getElementById('agentName').value.trim()||'ไม่ระบุ';
+  const customer = document.getElementById('customerName').value.trim()||'ไม่ระบุ';
+  const total    = entries.reduce((s,e)=>s+e.amount,0);
+  const poy = {
     id: Date.now(),
-    src: 'thai',
     date: new Date().toLocaleDateString('th-TH'),
     time: new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}),
-    agent: agentName,
-    customer: customerName,
+    agent, customer,
     items: [...entries],
-    total
+    total,
+    com: Math.round(total*COM),
   };
   poyHistory.unshift(poy);
-  saveHistory();
+  savePoyToFirebase(poy);
 
-  // reset
-  entries=[];price='';highlightDups=false;
-  selectedTypes.clear();activeGroup=null;rev2=false;rev3=false;digits='';
+  // reset all
+  entries=[]; price=''; highlightDups=false;
+  selectedTypes.clear(); lastGroup=null; rev2=false; rev3=false; digits='';
   document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.preset').forEach(p=>p.classList.remove('active'));
   document.getElementById('showDupBtn').textContent='แสดงเลขซ้ำ';
   document.getElementById('thai-p2').classList.remove('active');
   document.getElementById('thai-p1').classList.add('active');
   document.getElementById('backBtn').classList.add('hidden');
-  renderPage1();renderPage2();renderPriceDisplay();
+  renderPage1(); renderPage2(); renderPriceDisplay();
   showToast(`ส่งโพยแล้ว ${poy.items.length} รายการ ยอด ฿${fmt(total)} ✓`);
   document.getElementById('mainBody').scrollTop=0;
 });
 
-// ---- AGENT TAB ----
-function switchAgentTab(mode){
-  agentTabMode=mode;
-  document.querySelectorAll('.atab').forEach(b=>b.classList.remove('active'));
-  document.getElementById('atab-'+mode).classList.add('active');
-  renderAgentTab();
+/* ── BOTTOM NAV ── */
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const s = item.dataset.screen;
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+    item.classList.add('active');
+    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+    document.getElementById('screen-'+s).classList.add('active');
+    const titles={thai:'หวยไทย',lao:'หวยลาว',poy:'โพยหวย',agent:'นายหน้า'};
+    document.getElementById('headerTitle').textContent = titles[s];
+    document.getElementById('backBtn').classList.add('hidden');
+    if(s==='poy')   renderPoyHistory();
+    if(s==='agent') renderAgentTab();
+    document.getElementById('mainBody').scrollTop=0;
+  });
+});
+
+/* ── POY HISTORY ── */
+function renderPoyHistory(){
+  const c = document.getElementById('poyContent');
+  if(!poyHistory.length){
+    c.innerHTML='<div class="coming-soon"><div class="coming-icon">📋</div><div class="coming-txt">โพยหวย</div><div class="coming-sub">ยังไม่มีโพย — ส่งโพยก่อน</div></div>';
+    return;
+  }
+  let html='';
+  poyHistory.forEach((poy,pi)=>{
+    const rows = poy.items.map(e=>`
+      <div class="poy-row">
+        <span style="font-family:monospace;font-weight:900;color:#1C3A5F;">${e.number}</span>
+        <span style="font-size:11px;color:#4a6080;">${e.label}</span>
+        <span style="font-weight:700;">฿${fmt(e.amount)}</span>
+      </div>`).join('');
+    html+=`
+    <div class="poy-card">
+      <div class="poy-header">
+        <span style="color:#fff;font-weight:900;font-size:14px;">โพย #${poyHistory.length-pi} · ${poy.customer}</span>
+        <span style="color:#C8B289;font-size:11px;">${poy.date} ${poy.time}</span>
+      </div>
+      ${rows}
+      <div class="poy-footer">
+        <span>${poy.items.length} รายการ</span>
+        <span>ยอดรวม <b style="color:#1C3A5F;">฿${fmt(poy.total)}</b></span>
+      </div>
+    </div>`;
+  });
+  html+='<div style="height:16px;"></div>';
+  c.innerHTML=html;
 }
+
+/* ── AGENT TAB ── */
 function renderAgentTab(){
   const c = document.getElementById('agentContent');
-  const filteredHistory = agentTabMode==='summary' ? poyHistory :
-    poyHistory.filter(p=>p.src===agentTabMode);
-
-  if(!filteredHistory.length){
+  if(!poyHistory.length){
     c.innerHTML='<div class="coming-soon"><div class="coming-icon">👤</div><div class="coming-txt">นายหน้า</div><div class="coming-sub">ยังไม่มีข้อมูล — ส่งโพยก่อน</div></div>';
     return;
   }
-
-  const COM = 0.33;
   const agentMap={};
-  filteredHistory.forEach(p=>{
+  poyHistory.forEach(p=>{
     const k=p.agent;
-    if(!agentMap[k]) agentMap[k]={agent:k, customers:{}, totalBet:0, totalCom:0, poyCount:0};
-    const com = Math.round(p.total * COM);
-    agentMap[k].totalBet += p.total;
-    agentMap[k].totalCom += com;
+    if(!agentMap[k]) agentMap[k]={agent:k,customers:{},totalBet:0,totalCom:0,poyCount:0};
+    agentMap[k].totalBet+=p.total;
+    agentMap[k].totalCom+=p.com;
     agentMap[k].poyCount++;
     if(!agentMap[k].customers[p.customer]) agentMap[k].customers[p.customer]={name:p.customer,total:0,com:0,poyCount:0,poys:[]};
-    agentMap[k].customers[p.customer].total += p.total;
-    agentMap[k].customers[p.customer].com   += com;
+    agentMap[k].customers[p.customer].total+=p.total;
+    agentMap[k].customers[p.customer].com+=p.com;
     agentMap[k].customers[p.customer].poyCount++;
-    agentMap[k].customers[p.customer].poys.push({...p, com});
+    agentMap[k].customers[p.customer].poys.push(p);
   });
 
-  const srcLabel = agentTabMode==='thai'?' (หวยไทย)':agentTabMode==='lao'?' (หวยลาว)':'';
-  let html=`<div style="padding:12px 14px 0;font-size:10px;font-weight:700;color:#4a6080;letter-spacing:2px;">สรุปนายหน้า${srcLabel} (ค่าคอม 33%)</div>`;
-
+  let html=`<div style="padding:12px 14px 0;font-size:10px;font-weight:700;color:#4a6080;letter-spacing:2px;">สรุปนายหน้า (ค่าคอม 33%)</div>`;
   Object.values(agentMap).forEach(ag=>{
     html+=`
     <div style="margin:10px 14px 0;background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #C8B289;border-radius:12px;overflow:hidden;">
@@ -805,20 +727,10 @@ function renderAgentTab(){
           <span style="color:#C8B289;font-size:11px;">${ag.poyCount} โพย</span>
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:6px;">
-          <div style="display:flex;flex-direction:column;align-items:flex-start;">
-            <span style="font-size:9px;color:#e0d0b0;letter-spacing:1px;">ยอดแทงรวม</span>
-            <span style="font-size:16px;font-weight:900;color:#fff;">฿${fmt(ag.totalBet)}</span>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;">
-            <span style="font-size:9px;color:#e0d0b0;letter-spacing:1px;">ค่าคอมรวม (33%)</span>
-            <span style="font-size:16px;font-weight:900;color:#f5c842;">฿${fmt(ag.totalCom)}</span>
-          </div>
-        </div>
-        <div style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);display:flex;justify-content:flex-end;">
-          <span style="font-size:11px;color:#a0f0a0;">สุทธิหลังคอม ฿${fmt(ag.totalBet-ag.totalCom)}</span>
+          <div><div style="font-size:9px;color:#e0d0b0;">ยอดแทงรวม</div><div style="font-size:16px;font-weight:900;color:#fff;">฿${fmt(ag.totalBet)}</div></div>
+          <div style="text-align:right;"><div style="font-size:9px;color:#e0d0b0;">ค่าคอมรวม (33%)</div><div style="font-size:16px;font-weight:900;color:#f5c842;">฿${fmt(ag.totalCom)}</div></div>
         </div>
       </div>`;
-
     Object.values(ag.customers).forEach(cu=>{
       html+=`
       <div style="border-bottom:1px solid #f0ede6;">
@@ -826,21 +738,14 @@ function renderAgentTab(){
           <span style="font-size:13px;font-weight:700;color:#1a2a3a;">🧑 ${cu.name}</span>
           <div style="text-align:right;">
             <div style="font-size:11px;color:#4a6080;">ยอด <b style="color:#1C3A5F;">฿${fmt(cu.total)}</b></div>
-            <div style="font-size:11px;color:#a86200;">คอม <b style="color:#a86200;">฿${fmt(cu.com)}</b></div>
+            <div style="font-size:11px;color:#a86200;">คอม <b>฿${fmt(cu.com)}</b></div>
           </div>
         </div>`;
       cu.poys.forEach(p=>{
-        const badge=p.src==='lao'?'<span class="src-badge src-lao">🇱🇦</span>':'<span class="src-badge src-thai">🇹🇭</span>';
         html+=`
-        <div style="padding:7px 14px 7px 24px;display:flex;justify-content:space-between;border-top:1px dashed #f0ede6;align-items:center;cursor:pointer;" onclick="openReceipt(${p.id})">
-          <div>
-            <div style="font-size:11px;color:#4a6080;">${badge} ${p.date} ${p.time}</div>
-            <div style="font-size:10px;color:#b0bec8;">${p.items.length} รายการ — แตะดูใบเสร็จ</div>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:12px;font-weight:700;color:#1a7a3a;">฿${fmt(p.total)}</div>
-            <div style="font-size:11px;color:#a86200;">คอม ฿${fmt(p.com)}</div>
-          </div>
+        <div style="padding:7px 14px 7px 24px;display:flex;justify-content:space-between;border-top:1px dashed #f0ede6;align-items:center;">
+          <div><div style="font-size:11px;color:#4a6080;">${p.date} ${p.time}</div><div style="font-size:10px;color:#b0bec8;">${p.items.length} รายการ</div></div>
+          <div style="text-align:right;"><div style="font-size:12px;font-weight:700;color:#1a7a3a;">฿${fmt(p.total)}</div><div style="font-size:11px;color:#a86200;">คอม ฿${fmt(p.com)}</div></div>
         </div>`;
       });
       html+=`</div>`;
@@ -848,344 +753,25 @@ function renderAgentTab(){
     html+=`</div>`;
   });
 
-  // grand total
-  const grandBet  = Object.values(agentMap).reduce((s,a)=>s+a.totalBet,0);
-  const grandCom  = Object.values(agentMap).reduce((s,a)=>s+a.totalCom,0);
+  const grandBet = Object.values(agentMap).reduce((s,a)=>s+a.totalBet,0);
+  const grandCom = Object.values(agentMap).reduce((s,a)=>s+a.totalCom,0);
   html+=`
   <div style="margin:10px 14px 0;background:#fff;border:1.5px solid #d8cdb8;border-top:3px solid #f5c842;border-radius:12px;padding:14px;">
     <div style="font-size:10px;font-weight:700;color:#4a6080;letter-spacing:1px;margin-bottom:10px;">ยอดรวมทั้งหมด</div>
     <div style="display:flex;justify-content:space-between;">
-      <div style="display:flex;flex-direction:column;">
-        <span style="font-size:10px;color:#4a6080;">ยอดแทงทั้งหมด</span>
-        <span style="font-size:20px;font-weight:900;color:#1C3A5F;">฿${fmt(grandBet)}</span>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;">
-        <span style="font-size:10px;color:#a86200;">ค่าคอมทั้งหมด (33%)</span>
-        <span style="font-size:20px;font-weight:900;color:#a86200;">฿${fmt(grandCom)}</span>
-      </div>
-    </div>
-    <div style="margin-top:10px;padding-top:8px;border-top:1px solid #f0ede6;display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-size:12px;color:#4a6080;">สุทธิหลังหักคอม</span>
-      <span style="font-size:18px;font-weight:900;color:#1a7a3a;">฿${fmt(grandBet-grandCom)}</span>
+      <div><div style="font-size:10px;color:#4a6080;">ยอดแทงทั้งหมด</div><div style="font-size:20px;font-weight:900;color:#1C3A5F;">฿${fmt(grandBet)}</div></div>
+      <div style="text-align:right;"><div style="font-size:10px;color:#a86200;">ค่าคอมทั้งหมด (33%)</div><div style="font-size:20px;font-weight:900;color:#a86200;">฿${fmt(grandCom)}</div></div>
     </div>
   </div>
   <div style="height:16px;"></div>`;
-
   c.innerHTML=html;
 }
-function renderPoyHistory(){
-  const c=document.getElementById('poyContent');
-  if(!poyHistory.length){
-    c.innerHTML='<div class="poy-empty"><div class="poy-empty-icon">📋</div><div>ยังไม่มีโพย</div><div style="font-size:12px;margin-top:6px;color:#b0bec8;">ส่งโพยหวยไทยหรือหวยลาวก่อน</div></div>';
-    return;
-  }
-  c.innerHTML='';
-  poyHistory.forEach((poy,pi)=>{
-    const card=document.createElement('div');
-    card.className='poy-card';
-    const isLao=poy.src==='lao';
-    const badge=isLao?'<span class="src-badge src-lao">🇱🇦 ลาว</span>':'<span class="src-badge src-thai">🇹🇭 ไทย</span>';
-    let rows=poy.items.slice(0,6).map((e,i)=>`
-      <div class="poy-row">
-        <span class="poy-num">${e.number}</span>
-        <span class="poy-type">${e.label}</span>
-        <span class="poy-amt">฿${fmt(e.amount)}</span>
-      </div>`).join('');
-    if(poy.items.length>6) rows+=`<div class="poy-row" style="justify-content:center;color:#b0bec8;font-size:12px;">... อีก ${poy.items.length-6} รายการ (แตะดูทั้งหมด)</div>`;
-    card.innerHTML=`
-      <div class="poy-header" style="${isLao?'background:#7a1515':''}" onclick="openReceipt(${poy.id})" style="cursor:pointer;">
-        <span class="poy-header-title">โพย #${poyHistory.length-pi} ${badge}</span>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="poy-header-meta">${poy.date} ${poy.time}</span>
-          <button class="poy-del-btn" onclick="event.stopPropagation();deletePoy(${poy.id})" title="ลบโพย">🗑️</button>
-        </div>
-      </div>
-      <div style="padding:6px 14px;font-size:11px;color:#4a6080;background:#f8f5f0;display:flex;justify-content:space-between;">
-        <span>👤 ${poy.agent} / 🧑 ${poy.customer}</span>
-        <span style="color:#4a8060;cursor:pointer;" onclick="openReceipt(${poy.id})">ดูใบเสร็จ ▶</span>
-      </div>
-      ${rows}
-      <div class="poy-footer"><span>${poy.items.length} รายการ</span><span>ยอดรวม <b>฿${fmt(poy.total)}</b></span></div>`;
-    c.appendChild(card);
-  });
-}
-function deletePoy(id){
-  if(!confirm('ลบโพยนี้?')) return;
-  poyHistory=poyHistory.filter(p=>p.id!==id);
-  saveHistory();
-  renderPoyHistory();
-  showToast('ลบโพยแล้ว');
-}
-// Receipt modal
-function openReceipt(id){
-  const poy=poyHistory.find(p=>p.id===id);
-  if(!poy) return;
-  const isLao=poy.src==='lao';
-  const pi=poyHistory.findIndex(p=>p.id===id);
-  document.getElementById('modalHead').className='modal-head'+(isLao?' lao':'');
-  document.getElementById('modalTitle').textContent=`โพย #${poyHistory.length-pi} ${isLao?'🇱🇦':'🇹🇭'}`;
-  document.getElementById('modalMeta').textContent=`${poy.agent} / ${poy.customer} · ${poy.date} ${poy.time}`;
-  document.getElementById('modalCount').textContent=`${poy.items.length} รายการ`;
-  document.getElementById('modalTotal').textContent=`฿${fmt(poy.total)}`;
-  document.getElementById('modalBody').innerHTML=poy.items.map((e,i)=>`
-    <div class="poy-row">
-      <span style="color:#b0bec8;font-size:12px;">${i+1}.</span>
-      <span class="poy-num">${e.number}</span>
-      <span class="poy-type">${e.label}</span>
-      <span class="poy-amt">฿${fmt(e.amount)}</span>
-    </div>`).join('');
-  document.getElementById('receiptModal').classList.remove('hidden');
-}
-function closeReceipt(){
-  document.getElementById('receiptModal').classList.add('hidden');
-}
-document.getElementById('receiptModal').addEventListener('click',function(ev){
-  if(ev.target===this) closeReceipt();
-});
 
-// ============================================================
-// LAO LOTTERY LOGIC
-// ============================================================
-const LAO_TYPES = {
-  'l3top': {label:'3 ตัวบน (ลาว)',  digits:3, payout:700},
-  'l3tod': {label:'3 ตัวโต๊ด (ลาว)',digits:3, payout:120},
-  'l2top': {label:'2 ตัวบน (ลาว)',  digits:2, payout:90},
-  'l2bot': {label:'2 ตัวล่าง (ลาว)',digits:2, payout:90},
-};
-function laoGetMax(){return laoActiveGroup==='3'?3:laoActiveGroup==='2'?2:3;}
-function laoBuildEntries(priceVal){
-  const nums=(laoActiveGroup==='3'&&laoRev3)||(laoActiveGroup==='2'&&laoRev2)?perms(laoDigits):[laoDigits];
-  const res=[];
-  nums.forEach(n=>laoSelectedTypes.forEach(tid=>{
-    res.push({id:Date.now()+Math.random(), number:n, typeId:tid, label:LAO_TYPES[tid].label, payout:LAO_TYPES[tid].payout, amount:priceVal});
-  }));
-  return res;
-}
-function laoRenderSlots(){
-  const max=laoGetMax(), c=document.getElementById('laoSlots');
-  c.innerHTML='';
-  for(let i=0;i<max;i++){
-    const s=document.createElement('div');
-    s.className='slot'+(laoDigits[i]?' filled':'')+(i===laoDigits.length&&i<max?' cursor':'');
-    s.textContent=laoDigits[i]||'';
-    c.appendChild(s);
-  }
-}
-function laoRenderStatus(){
-  const bar=document.getElementById('laoStatusBar');
-  if(!laoSelectedTypes.size){bar.className='status-bar';bar.innerHTML='เลือกประเภทเพื่อเริ่มกดเลข';return;}
-  const labels=[...laoSelectedTypes].map(t=>LAO_TYPES[t].label).join(', ');
-  const rev=(laoActiveGroup==='3'&&laoRev3)||(laoActiveGroup==='2'&&laoRev2);
-  if(rev&&laoDigits.length===laoGetMax()){
-    const ps=perms(laoDigits);
-    bar.className='status-bar warn';
-    bar.innerHTML=`🔄 <b>${laoDigits}</b> → ${ps.join(', ')} · <b>${ps.length*laoSelectedTypes.size} รายการ</b>`;
-  } else {
-    bar.className='status-bar';
-    bar.innerHTML=`<b>${labels}</b>`;
-  }
-}
-function laoRenderRevBtns(){
-  const r2=document.getElementById('lao-rev2'), r3=document.getElementById('lao-rev3');
-  r2.classList.toggle('disabled',laoActiveGroup!=='2');
-  r3.classList.toggle('disabled',laoActiveGroup!=='3');
-  r2.classList.toggle('active',laoRev2&&laoActiveGroup==='2');
-  r3.classList.toggle('active',laoRev3&&laoActiveGroup==='3');
-}
-function laoRenderAddBtn(){
-  const ready=laoSelectedTypes.size>0&&laoDigits.length===laoGetMax();
-  const btn=document.getElementById('laoAddBtn');
-  btn.disabled=!ready;
-  btn.textContent=ready?`ใส่ราคา (${laoBuildEntries(1).length} รายการ)`:'ใส่ราคา';
-}
-function laoRenderPage1(){laoRenderSlots();laoRenderStatus();laoRenderRevBtns();laoRenderAddBtn();}
-function laoRenderPage2(){
-  const tbody=document.getElementById('laoEntryBody');
-  tbody.innerHTML='';
-  const numMap={};
-  laoEntries.forEach(e=>{const k=e.number+'_'+e.typeId; numMap[k]=(numMap[k]||0)+1;});
-  if(!laoEntries.length){
-    tbody.innerHTML='<tr><td colspan="6"><div class="empty">ไม่มีรายการ</div></td></tr>';
-  } else {
-    laoEntries.forEach((e,i)=>{
-      const k=e.number+'_'+e.typeId, isDup=numMap[k]>1;
-      const tr=document.createElement('tr');
-      if(laoHighlightDups&&isDup) tr.style.background='#fff8ee';
-      tr.innerHTML=`
-        <td>${i+1}</td>
-        <td><span class="num-chip" style="background:#c0392b;${isDup&&laoHighlightDups?'background:#e0a840':''}">${e.number}</span></td>
-        <td style="font-size:11px;color:#4a6080;">${e.label}</td>
-        <td style="font-size:12px;color:#4a6080;">×${e.payout}</td>
-        <td><input class="qty-input" type="number" min="1" value="${e.amount}" data-id="${e.id}"></td>
-        <td><button class="del-btn" data-id="${e.id}">ลบ</button></td>`;
-      tbody.appendChild(tr);
-    });
-  }
-  const total=laoEntries.reduce((s,e)=>s+e.amount,0);
-  document.getElementById('laoSumTxt').textContent=`${laoEntries.length} รายการ`;
-  document.getElementById('laoSumBet').textContent=laoEntries.length?`ยอด ฿${fmt(total)}`:'';
-  document.getElementById('laoSendBtn').disabled=!laoEntries.length||!laoPrice;
-  tbody.querySelectorAll('.qty-input').forEach(inp=>{
-    inp.addEventListener('change',()=>{
-      const e=laoEntries.find(x=>x.id==inp.dataset.id);
-      if(e){e.amount=Math.max(1,parseInt(inp.value)||1);inp.value=e.amount;laoRenderPage2();}
-    });
-  });
-  tbody.querySelectorAll('.del-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      laoEntries=laoEntries.filter(x=>x.id!=btn.dataset.id);
-      laoHighlightDups=false;
-      laoRenderPage2();
-      showToast('ลบรายการแล้ว');
-    });
-  });
-}
-function laoRenderPriceDisplay(){
-  document.getElementById('laoPriceDisplay').textContent=laoPrice||'_';
-  document.getElementById('laoSendBtn').disabled=!laoEntries.length||!laoPrice;
-  if(laoPrice){
-    const val=parseInt(laoPrice)||0;
-    laoEntries.forEach(e=>e.amount=val);
-    const total=laoEntries.reduce((s,e)=>s+e.amount,0);
-    document.getElementById('laoSumBet').textContent=`ยอด ฿${fmt(total)}`;
-    document.querySelectorAll('#laoEntryBody .qty-input').forEach(inp=>inp.value=val);
-  }
-}
-
-// Lao type buttons
-document.querySelectorAll('.lao-type').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const g=btn.classList.contains('t3')?'3':'2', t=btn.dataset.t;
-    if(laoActiveGroup&&laoActiveGroup!==g){
-      laoSelectedTypes.clear();
-      document.querySelectorAll('.lao-type').forEach(b=>b.classList.remove('active'));
-      laoRev2=false;laoRev3=false;laoDigits='';
-    }
-    laoActiveGroup=g;
-    if(laoSelectedTypes.has(t)){laoSelectedTypes.delete(t);btn.classList.remove('active');if(!laoSelectedTypes.size)laoActiveGroup=null;}
-    else{laoSelectedTypes.add(t);btn.classList.add('active');}
-    laoDigits='';
-    laoRenderPage1();
-  });
-});
-document.getElementById('lao-rev2').addEventListener('click',()=>{if(laoActiveGroup!=='2')return;laoRev2=!laoRev2;laoRenderPage1();});
-document.getElementById('lao-rev3').addEventListener('click',()=>{if(laoActiveGroup!=='3')return;laoRev3=!laoRev3;laoRenderPage1();});
-document.querySelectorAll('#laoNumpad1 .nkey').forEach(k=>{
-  k.addEventListener('click',()=>{
-    if(!laoActiveGroup)return;
-    const v=k.textContent.trim(), max=laoGetMax();
-    if(v==='C') laoDigits='';
-    else if(v==='⌫') laoDigits=laoDigits.slice(0,-1);
-    else if(laoDigits.length<max) laoDigits+=v;
-    laoRenderPage1();
-  });
-});
-document.getElementById('laoAddBtn').addEventListener('click',()=>{
-  const pending=laoBuildEntries(10);
-  if(!pending.length)return;
-  laoEntries=[...laoEntries,...pending];
-  laoPrice='';
-  laoHighlightDups=false;
-  document.querySelectorAll('.lao-preset').forEach(p=>p.classList.remove('active'));
-  document.getElementById('lao-p1').classList.remove('active');
-  document.getElementById('lao-p2').classList.add('active');
-  document.getElementById('backBtn').classList.remove('hidden');
-  laoRenderPage2();
-  laoRenderPriceDisplay();
-  document.getElementById('mainBody').scrollTop=0;
-});
-document.getElementById('laoShowDupBtn').addEventListener('click',()=>{
-  laoHighlightDups=!laoHighlightDups;
-  document.getElementById('laoShowDupBtn').textContent=laoHighlightDups?'ซ่อนเลขซ้ำ':'แสดงเลขซ้ำ';
-  laoRenderPage2();
-});
-document.getElementById('laoRmDupBtn').addEventListener('click',()=>{
-  const seen=new Set(), before=laoEntries.length;
-  laoEntries=laoEntries.filter(e=>{const k=e.number+'_'+e.typeId;if(seen.has(k))return false;seen.add(k);return true;});
-  laoHighlightDups=false;
-  document.getElementById('laoShowDupBtn').textContent='แสดงเลขซ้ำ';
-  laoRenderPage2();
-  showToast(`ตัดออก ${before-laoEntries.length} รายการ`);
-});
-document.getElementById('laoClearAllBtn').addEventListener('click',()=>{
-  if(!laoEntries.length){showToast('ไม่มีรายการ');return;}
-  if(confirm('ล้างรายการทั้งหมด?')){
-    laoEntries=[];laoPrice='';laoHighlightDups=false;
-    document.getElementById('laoShowDupBtn').textContent='แสดงเลขซ้ำ';
-    document.querySelectorAll('.lao-preset').forEach(p=>p.classList.remove('active'));
-    laoRenderPage2();laoRenderPriceDisplay();
-    showToast('ล้างรายการทั้งหมดแล้ว ✓');
-  }
-});
-document.querySelectorAll('#laoPriceNumpad .pkey').forEach(k=>{
-  k.addEventListener('click',()=>{
-    const v=k.textContent.trim();
-    if(v==='C') laoPrice='';
-    else if(v==='⌫') laoPrice=laoPrice.slice(0,-1);
-    else laoPrice+=v;
-    document.querySelectorAll('.lao-preset').forEach(p=>p.classList.remove('active'));
-    laoRenderPriceDisplay();
-    laoRenderPage2();
-  });
-});
-document.querySelectorAll('.lao-preset').forEach(p=>{
-  p.addEventListener('click',()=>{
-    laoPrice=p.dataset.v;
-    document.querySelectorAll('.lao-preset').forEach(x=>x.classList.remove('active'));
-    p.classList.add('active');
-    laoRenderPriceDisplay();
-    laoRenderPage2();
-  });
-});
-document.getElementById('laoSendBtn').addEventListener('click',()=>{
-  if(!laoEntries.length||!laoPrice){showToast('กรุณากรอกราคาก่อนส่งโพย');return;}
-  const agentName=document.getElementById('laoAgentName').value.trim()||'ไม่ระบุ';
-  const customerName=document.getElementById('laoCustomerName').value.trim()||'ไม่ระบุ';
-  const total=laoEntries.reduce((s,e)=>s+e.amount,0);
-  const poy={
-    id:Date.now(), src:'lao',
-    date:new Date().toLocaleDateString('th-TH'),
-    time:new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'}),
-    agent:agentName, customer:customerName,
-    items:[...laoEntries], total
-  };
-  poyHistory.unshift(poy);
-  saveHistory();
-  laoEntries=[];laoPrice='';laoHighlightDups=false;
-  laoSelectedTypes.clear();laoActiveGroup=null;laoRev2=false;laoRev3=false;laoDigits='';
-  document.querySelectorAll('.lao-type').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.lao-preset').forEach(p=>p.classList.remove('active'));
-  document.getElementById('laoShowDupBtn').textContent='แสดงเลขซ้ำ';
-  document.getElementById('lao-p2').classList.remove('active');
-  document.getElementById('lao-p1').classList.add('active');
-  document.getElementById('backBtn').classList.add('hidden');
-  laoRenderPage1();laoRenderPage2();laoRenderPriceDisplay();
-  showToast(`ส่งโพย (ลาว) แล้ว ${poy.items.length} รายการ ยอด ฿${fmt(total)} ✓`);
-  document.getElementById('mainBody').scrollTop=0;
-});
-
-// Back button shared — detect current active screen
-document.getElementById('backBtn').addEventListener('click',()=>{
-  const laoScreen=document.getElementById('screen-lao').classList.contains('active');
-  if(laoScreen){
-    document.getElementById('lao-p2').classList.remove('active');
-    document.getElementById('lao-p1').classList.add('active');
-    laoDigits='';laoRenderPage1();
-  } else {
-    document.getElementById('thai-p2').classList.remove('active');
-    document.getElementById('thai-p1').classList.add('active');
-    digits='';renderPage1();
-  }
-  document.getElementById('backBtn').classList.add('hidden');
-  document.getElementById('mainBody').scrollTop=0;
-});
-
-// ---- INIT ----
-loadHistory();
+/* ── INIT ── */
 renderPage1();
 renderPage2();
-laoRenderPage1();
-laoRenderPage2();
+renderPoyHistory();
+renderAgentTab();
 </script>
 </body>
 </html>
